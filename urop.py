@@ -14,8 +14,6 @@ file_names  = []
 
 with ZipFile('names.zip', 'r') as zipObj:
    file_names = zipObj.namelist()
-
-   
    
 df_list = []
    
@@ -28,15 +26,9 @@ for txt_file in file_names:
 
 main_dataframe = pd.concat(df_list, sort = False).reset_index()
 
-
-
 # Unisex names: .5 < boys/girls < 2
 
-
-
 groups = main_dataframe.groupby(['Name', 'Sex'], sort=True).sum().reset_index()
-
-
 
 #names = [i for i in groups['Name']]
 
