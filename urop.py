@@ -12,11 +12,12 @@ from zipfile import ZipFile
 
 file_names  = []
 
+# Opens Zip File
 with ZipFile('names.zip', 'r') as zipObj:
    file_names = zipObj.namelist()
-   
-df_list = []
-   
+
+# Gets lists of dataframes from each individual txt file
+df_list = []  
 for txt_file in file_names:
     if txt_file[6:14] != "National":
         df = pd.read_csv(txt_file, names=["Name", "Sex", "Count"])
@@ -24,14 +25,19 @@ for txt_file in file_names:
         df_list.append(df)
         
 
+# Combines the dataframes
 main_dataframe = pd.concat(df_list, sort = False).reset_index()
 
 # Unisex names: .5 < boys/girls < 2
 
+ # Group by the name and sex, and adds up the number of times they occur, 
+ # getting a total count
 groups = main_dataframe.groupby(['Name', 'Sex'], sort=True).sum().reset_index()
 
 #names = [i for i in groups['Name']]
 
+
+# Loop through the dataframe to calculate if the names are unisex
 data = []
 
 for i in range (0, len(groups)-1):
@@ -58,6 +64,7 @@ final_data = []
 for i in range(0,10):
     final_data.append(new_list[i]['Name'])
 
+# Final data has the top ten unisex names since 1880
 print(final_data)
     
 
